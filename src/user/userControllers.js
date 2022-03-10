@@ -20,3 +20,37 @@ try {
     res.status(500).send({ err: error.message });
 }
 };
+
+exports.updatePassword = async (req, res) => {
+    try {
+        const updatedUser = await User.updateOne(
+            { username: req.user.username },
+            { password: req.body.password }
+            );
+            if (updatedUser.modifiedCount > 0) {
+                res.status(200).send({ msg: "Successfully updated user" });
+            } else {
+                throw new Error("Did not update");
+            }
+    } catch (error) {
+        console.log(error)
+        res.status(500).send({ err: error.message });
+    }
+}
+
+exports.deleteUser = async (req, res) => {
+    try {
+        let result;
+        if (req.use.username === req.params.username) {
+            result = await User.deleteOne({ username: req.user.username });
+        }
+        if (result.deletedCount > 0) {
+            res.status(200).send({ msg: "User deleted" });
+        } else {
+            throw new Error("Nothing deletred");
+        }
+    } catch (error) {
+    console.log(error);
+    res.status(500).send({ err: error.message });
+    }
+};

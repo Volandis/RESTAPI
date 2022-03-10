@@ -44,10 +44,10 @@ exports.deleteUser = async (req, res) => {
         if (req.use.username === req.params.username) {
             result = await User.deleteOne({ username: req.user.username });
         }
-        if (result.deletedCount > 0) {
+        if (result && result.deletedCount > 0) {
             res.status(200).send({ msg: "User deleted" });
         } else {
-            throw new Error("Nothing deletred");
+            throw new Error("Nothing deleted");
         }
     } catch (error) {
     console.log(error);
